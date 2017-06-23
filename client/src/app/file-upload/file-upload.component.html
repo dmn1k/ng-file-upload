@@ -1,0 +1,13 @@
+<!--component html goes here -->
+
+<input type="file" [multiple]="multiple" #fileInput>
+<button (click)="upload()" md-button>Upload</button>
+
+<div class="row">&nbsp;</div>
+
+
+<div *ngIf="showProgressBar">
+    <ngb-progressbar type="primary" [value]="progress">
+        <span>{{ progress }} %</span>
+    </ngb-progressbar>
+</div>
