@@ -33,7 +33,6 @@ export class FileUploadComponent {
             this.http
                 .withUploadProgressListener(p => {
                     this.showProgressBar = true;
-                    console.log(p.percentage);
                     this.progress = p.percentage;
 
                 })
@@ -43,9 +42,6 @@ export class FileUploadComponent {
                     error => console.log(error),
                     () => this.showProgressBar = false
                 );
-
-            // do whatever you do...
-            // subscribe to observable to listen for response
         }
     }
 }
