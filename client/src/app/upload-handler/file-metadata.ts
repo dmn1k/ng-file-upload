@@ -1,3 +1,3 @@
-export class UploadFileHandle {
+export class FileMetadata {
     constructor(public id: String, public conversionFinished: Boolean) { }
 }

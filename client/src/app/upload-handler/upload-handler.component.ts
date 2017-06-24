@@ -1,4 +1,4 @@
-import { UploadFileHandle } from './upload-file-handle';
+import { FileMetadata } from './file-metadata';
 import { ProgressHttp } from 'angular-progress-http';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
@@ -32,11 +32,11 @@ export class UploadHandlerComponent {
 
             })
             .post('http://localhost:9080/', formData)
-            .map(res => <UploadFileHandle>res.json())
+            .map(res => <FileMetadata>res.json())
             .subscribe(
-                data => console.log(data),
-                error => console.log(error),
-                () => this.showProgressBar = false
+            data => console.log(data),
+            error => console.log(error),
+            () => this.showProgressBar = false
             );
     }
 }
