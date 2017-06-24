@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +15,7 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 
 public class UploadServlet extends HttpServlet {
 
@@ -43,7 +45,7 @@ public class UploadServlet extends HttpServlet {
                     System.out.println("File field " + name + " with file name "
                             + item.getName() + " detected.");
                     try(InputStream stream = item.openStream()){
-                        Files.copy(stream, new File(UPLOAD_DIRECTORY).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        Files.copy(stream, Paths.get(UPLOAD_DIRECTORY, item.getName()), StandardCopyOption.REPLACE_EXISTING);
                     }
                 }
             }
