@@ -10,32 +10,28 @@ import { Component, ComponentFactoryResolver, ViewChild, NgZone, OnDestroy } fro
     styleUrls: ['file-upload-dialog.component.scss']
 })
 export class FileUploadDialogComponent implements OnDestroy {
-    closeResult: String;
+    @ViewChild('content') contentTemplate: HTMLTemplateElement;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver,
         private modalService: NgbModal,
         private ngZone: NgZone) {
-        window['uploadDialogRef'] = { component: this, zone: ngZone };
+
+        const openDialogFunc = (callback) => ngZone.run(() => this.open(this.contentTemplate, callback));
+
+        window['uploadDialogRef'] = {
+            component: this,
+            zone: ngZone,
+            openDialog: openDialogFunc
+        };
     }
 
-    open(content) {
+    open(content, callback?) {
         this.modalService.open(content).result.then((result) => {
-            this.closeResult = `Closed with: ${result}`;
+            callback();
         }, (reason) => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            callback();
         });
     }
-
-    private getDismissReason(reason: any): string {
-        if (reason === ModalDismissReasons.ESC) {
-            return 'by pressing ESC';
-        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-            return 'by clicking on a backdrop';
-        } else {
-            return `with: ${reason}`;
-        }
-    }
-
 
     ngOnDestroy(): void {
         window['uploadDialogRef'] = null;
