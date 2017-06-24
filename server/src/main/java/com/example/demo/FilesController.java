@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class FilesController {
-    
+    private static AtomicInteger failedCount = new AtomicInteger(0);
     @GetMapping("/metadata/{fileId}")
     public ResponseEntity<FileMetadata> getFileMetadata(@PathVariable String fileId) throws InterruptedException{
-        Thread.sleep(1000);
-        return ResponseEntity.ok(new FileMetadata(fileId, true));
+        int count = failedCount.incrementAndGet();
+        
+        return ResponseEntity.ok(new FileMetadata(fileId, count % 10 == 0));
     }
     
     @PostMapping("/")

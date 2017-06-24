@@ -14,7 +14,8 @@ import 'rxjs/add/operator/map';
 })
 export class UploadHandlerComponent {
     public progress = 0;
-    public showProgressBar = false;
+    public showProgressBar = true;
+    public finished = false;
 
     constructor(private http: ProgressHttp) { }
 
@@ -27,16 +28,28 @@ export class UploadHandlerComponent {
 
         this.http
             .withUploadProgressListener(p => {
-                this.showProgressBar = true;
                 this.progress = p.percentage;
 
             })
             .post('http://localhost:9080/', formData)
             .map(res => <FileMetadata>res.json())
             .subscribe(
-            data => console.log(data),
-            error => console.log(error),
-            () => this.showProgressBar = false
+            data => {
+                this.finished = data.conversionFinished;
+                if (!data.conversionFinished) {
+                    const pollingSubscription = Observable.interval(1000)
+                        .switchMap(() => this.http.get(`http://localhost:9080/metadata/${data.id}`))
+                        .map(res => <FileMetadata>res.json())
+                        .subscribe(
+                        data2 => {
+                            if (data2.conversionFinished) {
+                                this.finished = true;
+                                pollingSubscription.unsubscribe();
+                            }
+                        });
+                }
+            },
+            error => console.log(error)
             );
     }
 }

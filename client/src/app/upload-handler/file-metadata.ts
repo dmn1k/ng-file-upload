@@ -1,3 +1,3 @@
 export class FileMetadata {
-    constructor(public id: String, public conversionFinished: Boolean) { }
+    constructor(public id: String, public conversionFinished: boolean) { }
 }
