@@ -1,18 +1,22 @@
+import { UploadHandlerComponent } from './upload-handler/upload-handler.component';
 import { HttpModule } from '@angular/http';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ProgressHttpModule } from 'angular-progress-http';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
 import { AppComponent } from './app.component';
+import { UploadHostDirective } from './upload-handler/upload-host.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    UploadHostDirective,
+    UploadHandlerComponent
   ],
   imports: [
     BrowserModule,
@@ -21,6 +25,7 @@ import { AppComponent } from './app.component';
     NgbModule.forRoot()
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [UploadHandlerComponent]
 })
 export class AppModule { }

@@ -1,7 +1,6 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { ProgressHttp } from 'angular-progress-http';
+import { UploadHostDirective } from './../upload-handler/upload-host.directive';
+import { UploadHandlerComponent } from './../upload-handler/upload-handler.component';
+import { Component, ElementRef, Input, ViewChild, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 
 import 'rxjs/operator/map';
 
@@ -13,35 +12,22 @@ import 'rxjs/operator/map';
 export class FileUploadComponent {
     @Input() multiple = false;
     @ViewChild('fileInput') inputEl: ElementRef;
+    @ViewChild(UploadHostDirective) uploadHost: UploadHostDirective;
 
-    public progress = 0;
-    public showProgressBar = false;
-
-    constructor(private http: ProgressHttp) { }
+    constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
     upload() {
-        console.log('Upload!');
-        this.progress = 0;
-
         const inputEl: HTMLInputElement = this.inputEl.nativeElement;
         const fileCount: number = inputEl.files.length;
-        const formData = new FormData();
-        if (fileCount > 0) { // a file was selected
-            for (let i = 0; i < fileCount; i++) {
-                formData.append('file[]', inputEl.files.item(i));
-            }
-            this.http
-                .withUploadProgressListener(p => {
-                    this.showProgressBar = true;
-                    this.progress = p.percentage;
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(UploadHandlerComponent);
+        const viewContainer = this.uploadHost.viewContainerRef;
+        viewContainer.clear();
 
-                })
-                .post('http://localhost:9080/upload', formData)
-                .subscribe(
-                    data => console.log('success'),
-                    error => console.log(error),
-                    () => this.showProgressBar = false
-                );
+        if (fileCount > 0) {
+            for (let i = 0; i < fileCount; i++) {
+                const uploadHandler = viewContainer.createComponent(componentFactory);
+                uploadHandler.instance.upload(inputEl.files.item(i));
+            }
         }
     }
 }
