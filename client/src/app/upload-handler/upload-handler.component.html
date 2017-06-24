@@ -1,6 +1,6 @@
 <div class="row">
     <div *ngIf="showProgressBar">
-        <ngb-progressbar *ngIf="showProgressBar" type="primary" [animated]="progress == 100" [value]="progress">
+        <ngb-progressbar *ngIf="showProgressBar" type="primary" [animated]="true" [striped]="true" [value]="progress">
             <span>{{ progress }} %</span>
         </ngb-progressbar>
     </div>

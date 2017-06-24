@@ -1,12 +1,11 @@
+import { FileUploadDialogComponent } from './file-upload-dialog/file-upload-dialog.component';
 import { UploadHandlerComponent } from './upload-handler/upload-handler.component';
 import { HttpModule } from '@angular/http';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ProgressHttpModule } from 'angular-progress-http';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-
+import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { UploadHostDirective } from './upload-handler/upload-host.directive';
@@ -16,7 +15,8 @@ import { UploadHostDirective } from './upload-handler/upload-host.directive';
     AppComponent,
     FileUploadComponent,
     UploadHostDirective,
-    UploadHandlerComponent
+    UploadHandlerComponent,
+    FileUploadDialogComponent
   ],
   imports: [
     BrowserModule,

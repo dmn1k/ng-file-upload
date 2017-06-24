@@ -1,6 +1,7 @@
+import { NgbModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { UploadHostDirective } from './../upload-handler/upload-host.directive';
 import { UploadHandlerComponent } from './../upload-handler/upload-handler.component';
-import { Component, ElementRef, Input, ViewChild, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, ComponentFactoryResolver, ViewContainerRef, NgZone, OnDestroy } from '@angular/core';
 
 import 'rxjs/operator/map';
 
@@ -14,7 +15,10 @@ export class FileUploadComponent {
     @ViewChild('fileInput') inputEl: ElementRef;
     @ViewChild(UploadHostDirective) uploadHost: UploadHostDirective;
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+    closeResult: String;
+
+    constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+    }
 
     upload() {
         const inputEl: HTMLInputElement = this.inputEl.nativeElement;
