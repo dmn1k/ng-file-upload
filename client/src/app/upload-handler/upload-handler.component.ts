@@ -1,5 +1,9 @@
+import { UploadFileHandle } from './upload-file-handle';
 import { ProgressHttp } from 'angular-progress-http';
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
+
+import 'rxjs/add/operator/map';
 
 @Component({
     moduleId: module.id,
@@ -27,9 +31,10 @@ export class UploadHandlerComponent {
                 this.progress = p.percentage;
 
             })
-            .post('http://localhost:9080/upload', formData)
+            .post('http://localhost:9080/', formData)
+            .map(res => <UploadFileHandle>res.json())
             .subscribe(
-                data => console.log('success'),
+                data => console.log(data),
                 error => console.log(error),
                 () => this.showProgressBar = false
             );
