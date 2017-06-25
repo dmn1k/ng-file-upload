@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>External app</title>
+</head>
+
+<body>
+    <div id="uploadFrame"></div>
+    <input type="submit" onclick="window.uploadDialogRef.openDialog(function(){console.log('close');});">UPLOAD</input>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $("#uploadFrame").load('http://localhost:4200', function () {
+            console.log("Loaded!");
+        });
+    </script>
+</body>
+
+</html>
