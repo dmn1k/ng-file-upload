@@ -15,7 +15,7 @@ const { AotPlugin } = require('@ngtools/webpack');
 const nodeModules = path.join(process.cwd(), 'node_modules');
 const realNodeModules = fs.realpathSync(nodeModules);
 const genDirNodeModules = path.join(process.cwd(), 'src', '$$_gendir', 'node_modules');
-const entryPoints = ["main", "scripts", "styles"];
+const entryPoints = ["polyfills", "main", "scripts", "styles"];
 const minimizeCss = false;
 const baseHref = "";
 const deployUrl = "";
@@ -65,22 +65,21 @@ module.exports = {
       ".js"
     ],
     "modules": [
-      "./node_modules",
       "./node_modules"
     ]
   },
   "resolveLoader": {
     "modules": [
-      "./node_modules",
       "./node_modules"
     ]
   },
   "entry": {
+    "polyfills": [
+      "./src\\polyfills.ts"
+    ],
     "main": [
       "./node_modules\\reflect-metadata\\Reflect.js",
-      "./node_modules\\zone.js\\dist\\zone.js",
-      "./src\\main.ts",
-      "./src\\polyfills.ts"
+      "./src\\main.ts"
     ],
     "scripts": [
       "script-loader!./node_modules\\jquery\\dist\\jquery.js",
@@ -184,36 +183,6 @@ module.exports = {
           path.join(process.cwd(), "src\\styles.css"),
           path.join(process.cwd(), "node_modules\\bootstrap\\dist\\css\\bootstrap.css")
         ],
-        "test": /\.less$/,
-        "use": [
-          "exports-loader?module.exports.toString()",
-          {
-            "loader": "css-loader",
-            "options": {
-              "sourceMap": false,
-              "importLoaders": 1
-            }
-          },
-          {
-            "loader": "postcss-loader",
-            "options": {
-              "ident": "postcss",
-              "plugins": postcssPlugins
-            }
-          },
-          {
-            "loader": "less-loader",
-            "options": {
-              "sourceMap": false
-            }
-          }
-        ]
-      },
-      {
-        "exclude": [
-          path.join(process.cwd(), "src\\styles.css"),
-          path.join(process.cwd(), "node_modules\\bootstrap\\dist\\css\\bootstrap.css")
-        ],
         "test": /\.styl$/,
         "use": [
           "exports-loader?module.exports.toString()",
@@ -292,36 +261,6 @@ module.exports = {
               "sourceMap": false,
               "precision": 8,
               "includePaths": []
-            }
-          }
-        ]
-      },
-      {
-        "include": [
-          path.join(process.cwd(), "src\\styles.css"),
-          path.join(process.cwd(), "node_modules\\bootstrap\\dist\\css\\bootstrap.css")
-        ],
-        "test": /\.less$/,
-        "use": [
-          "style-loader",
-          {
-            "loader": "css-loader",
-            "options": {
-              "sourceMap": false,
-              "importLoaders": 1
-            }
-          },
-          {
-            "loader": "postcss-loader",
-            "options": {
-              "ident": "postcss",
-              "plugins": postcssPlugins
-            }
-          },
-          {
-            "loader": "less-loader",
-            "options": {
-              "sourceMap": false
             }
           }
         ]
