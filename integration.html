@@ -8,13 +8,41 @@
 
 <body>
     <div id="uploadFrame"></div>
-    <input type="submit" onclick="window.uploadDialogRef.openDialog(function(){console.log('close');});" value="UPLOAD"></input>
+    <input type="submit" onclick="openDialog();" value="UPLOAD"></input>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
-        $("#uploadFrame").load('http://localhost:4200', function () {
-            console.log("Loaded!");
-        });
+        function openDialog() {
+            $.get('http://localhost:4200', function (data) {
+                console.log("Loaded!");
+                if (typeof Zone !== "undefined") {
+                    data = data.replace(/<script type="text\/javascript" src=".*\/polyfills\.bundle\.js">/g, "");
+                }
+
+                console.log(data);
+                $("#uploadFrame").html(data);
+                waitForElement(function () {
+                    console.log("ready");
+                    uploadDialogRef.openDialog(function () {
+                        console.log('close');
+
+                        delete uploadDialogRef;
+                        uploadDialogRef = undefined;
+                        $('#uploadFrame').empty();
+                    });
+                });
+            });
+
+        }
+
+        function waitForElement(callback) {
+            var interval = setInterval(function () {
+                if (typeof uploadDialogRef !== "undefined") {
+                    clearInterval(interval);
+                    callback();
+                }
+            }, 100);
+        }
     </script>
 </body>
 
