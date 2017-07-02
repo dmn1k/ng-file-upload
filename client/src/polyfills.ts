@@ -1,11 +1,3 @@
-// see https://github.com/Microsoft/TypeScript/issues/12364
-declare global {
-    interface System {
-        import(request: string): Promise<any>
-    }
-    var System: System
-}
-
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.
