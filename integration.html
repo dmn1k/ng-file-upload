@@ -15,9 +15,6 @@
         function openDialog() {
             $.get('http://localhost:4200', function (data) {
                 console.log("Loaded!");
-                if (typeof Zone !== "undefined") {
-                    data = data.replace(/<script type="text\/javascript" src=".*\/polyfills\.bundle\.js">/g, "");
-                }
 
                 console.log(data);
                 $("#uploadFrame").html(data);
